@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:15
+    container_name: lostfound_db
+    environment:
+      POSTGRES_DB: lostfound
+      POSTGRES_USER: lostfound_user
+      POSTGRES_PASSWORD: lostfound_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lostfound_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    container_name: lostfound_web
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1
+      - DB_NAME=lostfound
+      - DB_USER=lostfound_user
+      - DB_PASSWORD=lostfound_pass
+      - DB_HOST=db
+      - DB_PORT=5432
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

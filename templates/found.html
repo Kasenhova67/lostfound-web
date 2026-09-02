@@ -1,0 +1,15 @@
+{% load static %}
+{% include "base.html" %}
+{% include "header.html" %}
+
+<div class="box">
+    <h1>🔍 Report Found Item</h1>
+    <p class="sub">Fill in the details below to report a found item.</p>
+    <form method="post" class="forms">
+        {% csrf_token %}
+        {{ form1.as_p }}
+        <button type="submit" class="log">Submit Report</button>
+    </form>
+</div>
+
+{% include "footer.html" %}

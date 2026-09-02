@@ -1,0 +1,15 @@
+{% load static %}
+{% include "base.html" %}
+{% include "header.html" %}
+
+<div style="text-align: center; padding: 80px 20px;">
+    <div style="font-size: 80px; margin-bottom: 20px;"></div>
+    <h1 style="font-size: 48px; color: var(--success);">You have been logged out!</h1>
+    <p style="font-size: 24px; color: var(--gray-500); margin: 12px 0 40px;">Thanks for visiting us!</p>
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="/login/" class="btn btn-primary">Login again</a>
+        <a href="/" class="btn btn-outline">Home</a>
+    </div>
+</div>
+
+{% include "footer.html" %}

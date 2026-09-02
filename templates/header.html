@@ -1,0 +1,23 @@
+{% load static %}
+<header>
+    <div class="container">
+        <a href="/" class="logo">
+            <span class="icon">📦</span>
+            Lost<span>&</span>Found
+        </a>
+        <div class="nav">
+            <a href="/lostlist/">Lost</a>
+            <a href="/foundList/">Found</a>
+            {% if user.is_authenticated %}
+                {% if user.is_staff or user.is_superuser %}
+                    <a href="/admin/" style="background: rgba(124,58,237,0.15); color: var(--primary-light);">Admin</a>
+                {% endif %}
+               <a href="/profile/" class="links">{{ user.username }}</a>
+                <a href="/logout/" style="color: var(--text-muted);">Logout</a>
+            {% else %}
+                <a href="/login/">Login</a>
+                <a href="/register/" class="btn-small btn-small-primary">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+</header>

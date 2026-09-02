@@ -1,0 +1,80 @@
+{% load static %}
+{% include "base.html" %}
+{% include "header.html" %}
+
+<div style="max-width: 1200px; margin: 20px auto; padding: 0 24px;">
+    <form method="get" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--bg-card); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border);">
+        
+        <input type="text" name="q" placeholder=" Поиск..." value="{{ query }}" style="flex: 2; min-width: 200px; padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text);">
+        
+        <input type="date" name="date_from" value="{{ date_from }}" style="padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text);">
+        <span style="color: var(--text-muted);">—</span>
+        
+        <input type="date" name="date_to" value="{{ date_to }}" style="padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text);">
+        
+        <input type="text" name="place" placeholder=" Место" value="{{ place }}" style="flex: 1; min-width: 150px; padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text);">
+
+        <select name="sort" style="padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text);">
+            <option value="-date" {% if sort_by == '-date' %}selected{% endif %}> Сначала новые</option>
+            <option value="date" {% if sort_by == 'date' %}selected{% endif %}> Сначала старые</option>
+            <option value="product_title" {% if sort_by == 'product_title' %}selected{% endif %}> По названию (А-Я)</option>
+            <option value="-product_title" {% if sort_by == '-product_title' %}selected{% endif %}> По названию (Я-А)</option>
+        </select>
+        
+        <button type="submit" style="padding: 10px 24px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+             Найти
+        </button>
+        <a href="?" style="padding: 10px 20px; background: var(--gray-200); color: var(--text); border-radius: 8px; text-decoration: none; font-weight: 500;">
+             Сбросить
+        </a>
+    </form>
+</div>
+
+<div class="grid">
+    {% for data in object %}
+        <div class="card">
+            <div class="title">{{ data.product_title }}</div>
+            <div class="meta">
+                <span>📍 {{ data.place }}</span>
+                <span>📅 {{ data.date }}</span>
+                <span>🕐 {{ data.time }}</span>
+            </div>
+            <div class="desc">{{ data.description|truncatechars:120 }}</div>
+            <div class="footer">
+                <span class="tag lost">Lost</span>
+                <span class="username">by {{ data.username|default:"Anonymous" }}</span>
+            </div>
+        </div>
+    {% empty %}
+        <div style="text-align: center; padding: 60px 20px; grid-column: 1 / -1;">
+            <div style="font-size: 48px; margin-bottom: 16px;">🔍</div>
+            <h3 style="font-weight: 700;">Ничего не найдено</h3>
+            <p style="color: var(--text-muted);">Попробуйте изменить параметры поиска</p>
+            <a href="?" class="btn btn-outline" style="margin-top: 16px;">Сбросить фильтры</a>
+        </div>
+    {% endfor %}
+</div>
+
+{% if object.has_other_pages %}
+<div class="pagination">
+    {% if object.has_previous %}
+        <a href="?page=1&q={{ query }}&date_from={{ date_from }}&date_to={{ date_to }}&place={{ place }}&sort={{ sort_by }}">&laquo; First</a>
+        <a href="?page={{ object.previous_page_number }}&q={{ query }}&date_from={{ date_from }}&date_to={{ date_to }}&place={{ place }}&sort={{ sort_by }}">‹ Prev</a>
+    {% endif %}
+
+    {% for num in object.paginator.page_range %}
+        {% if object.number == num %}
+            <span class="current">{{ num }}</span>
+        {% elif num > object.number|add:'-3' and num < object.number|add:'3' %}
+            <a href="?page={{ num }}&q={{ query }}&date_from={{ date_from }}&date_to={{ date_to }}&place={{ place }}&sort={{ sort_by }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if object.has_next %}
+        <a href="?page={{ object.next_page_number }}&q={{ query }}&date_from={{ date_from }}&date_to={{ date_to }}&place={{ place }}&sort={{ sort_by }}">Next ›</a>
+        <a href="?page={{ object.paginator.num_pages }}&q={{ query }}&date_from={{ date_from }}&date_to={{ date_to }}&place={{ place }}&sort={{ sort_by }}">Last &raquo;</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% include "footer.html" %}

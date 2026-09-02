@@ -1,0 +1,18 @@
+{% load static %}
+{% include "base.html" %}
+{% include "header.html" %}
+
+<div class="box">
+    <h1>✨ Create Account</h1>
+    <p class="sub">Join Lost&Found today</p>
+    <form method="post" class="forms">
+        {% csrf_token %}
+        {{ formregi.as_p }}
+        <button type="submit" class="log">Sign Up</button>
+    </form>
+    <p style="text-align: center; margin-top: 16px; color: var(--text-muted);">
+        Already have an account? <a href="/login/" style="color: var(--primary-light);">Login</a>
+    </p>
+</div>
+
+{% include "footer.html" %}

@@ -1,0 +1,41 @@
+{% load static %}
+{% include "base.html" %}
+{% include "header.html" %}
+
+<div style="max-width: 800px; margin: 30px auto; padding: 0 20px;">
+    <div class="card" style="padding: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="font-size: 24px; font-weight: 700;">{{ data.product_title }}</h2>
+            <span class="tag found">Found</span>
+        </div>
+        
+        <div class="meta" style="display: flex; gap: 20px; flex-wrap: wrap; font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">
+            <span>📍 {{ data.place }}</span>
+            <span>📅 {{ data.date }}</span>
+            <span>🕐 {{ data.time }}</span>
+        </div>
+        
+        <div style="margin-bottom: 16px;">
+            <h4 style="font-weight: 600; margin-bottom: 4px;">Description</h4>
+            <p style="color: var(--text-muted); line-height: 1.6;">{{ data.description }}</p>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <h4 style="font-weight: 600; margin-bottom: 4px;">Contact</h4>
+            <p style="color: var(--text-muted);">{{ data.contactme }}</p>
+        </div>
+        
+        <div class="footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid var(--border);">
+            <span style="font-size: 14px; color: var(--text-muted);">
+                {% if data.username %}
+                    by {{ data.username }}
+                {% else %}
+                    by Anonymous
+                {% endif %}
+            </span>
+            <a href="delete/" class="btn btn-success" style="padding: 10px 24px; font-size: 14px; text-decoration: none; border-radius: 8px; background: var(--success); color: white; font-weight: 600;"> Found Owner?</a>
+        </div>
+    </div>
+</div>
+
+{% include "footer.html" %}

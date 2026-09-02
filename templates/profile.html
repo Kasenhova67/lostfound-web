@@ -1,0 +1,14 @@
+{% load static %}
+{% include "base.html" %}
+{% include "header.html" %}
+
+<div class="profile">
+    <div class="name">{{ user.username }}</div>
+    <div class="email">{{ user.email }}</div>
+    <div class="actions">
+        <a href="my_lost_things/" class="btn btn-outline">My Lost</a>
+        <a href="my_found_things/" class="btn btn-outline">My Found</a>
+    </div>
+</div>
+
+{% include "footer.html" %}
